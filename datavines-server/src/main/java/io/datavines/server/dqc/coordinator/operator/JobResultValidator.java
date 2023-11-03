@@ -134,8 +134,8 @@ public class JobResultValidator {
             MetricExecutionResult metricExecutionResult = new MetricExecutionResult();
             BeanUtils.copyProperties(jobExecutionResult, metricExecutionResult);
             List<String> messages = new ArrayList<>();
-            messages.add((isEn ? "Job Name : ": "作业名称: ") + jobName);
-            messages.add(String.format((isEn ? "Datasource : %s [%s] : ": "数据源 : %s [%s]: ") ,dataSourceType.toUpperCase(), dataSourceName));
+            messages.add((isEn ? "Job Name : ": " - **作业名称:** ") + jobName);
+            messages.add(String.format((isEn ? "Datasource : %s [%s] : ": " - **数据源:** %s [%s]: ") ,dataSourceType.toUpperCase(), dataSourceName));
             String title = buildAlertSubject(metricExecutionResult, isEn);
             String content = buildAlertMessage(messages, metricExecutionResult, jobExecution.getEngineType(), isEn);
             message.setSubject(title);
@@ -160,20 +160,20 @@ public class JobResultValidator {
         parameters.put("operator",OperatorType.of(metricExecutionResult.getOperator()).getSymbol());
 
         SqlMetric sqlMetric = PluginLoader.getPluginLoader(SqlMetric.class).getOrCreatePlugin(metricExecutionResult.getMetricName());
-        messages.add((isEn ? "Metric" : "检查规则") + " : " + sqlMetric.getNameByLanguage(isEn));
+        messages.add((isEn ? "Metric" : " - **检查规则**") + " : " + sqlMetric.getNameByLanguage(isEn));
 
         ResultFormula resultFormula =
                 PluginLoader.getPluginLoader(ResultFormula.class).getOrCreatePlugin(metricExecutionResult.getResultFormula());
 
-        messages.add((isEn ? "Check Subject" : "检查目标") + " : " + metricExecutionResult.getDatabaseName() + "." + metricExecutionResult.getTableName() + "." + metricExecutionResult.getColumnName());
+        messages.add((isEn ? "Check Subject" : " - **检查目标**") + " : " + metricExecutionResult.getDatabaseName() + "." + metricExecutionResult.getTableName() + "." + metricExecutionResult.getColumnName());
 
         ExpectedValue expectedValue = PluginLoader.getPluginLoader(ExpectedValue.class).getOrCreatePlugin(engineType + "_" + metricExecutionResult.getExpectedType());
-        messages.add((isEn ? "Expected Value Type" : "期望值类型") + " : " + expectedValue.getNameByLanguage(isEn));
+        messages.add((isEn ? "Expected Value Type" : " - **期望值类型**") + " : " + expectedValue.getNameByLanguage(isEn));
 
         String resultFormulaFormat = resultFormula.getResultFormat(isEn)+" ${operator} ${threshold}";
-        messages.add((isEn ? "Result Formula" : "检查公式") + " : " + ParameterUtils.convertParameterPlaceholders(resultFormulaFormat, parameters));
+        messages.add((isEn ? "Result Formula" : " - **检查公式**") + " : " + ParameterUtils.convertParameterPlaceholders(resultFormulaFormat, parameters));
 
-        messages.add(isEn ? "Check Result : Failure" : "检查结果 : 异常" );
+        messages.add(isEn ? "Check Result : Failure" : " - **检查结果:** 异常" );
 
         return JSONUtils.toJsonString(messages);
     }
