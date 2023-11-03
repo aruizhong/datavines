@@ -23,6 +23,7 @@ import java.util.Locale;
 public class LanguageUtils {
 
     public static boolean isZhContext() {
-        return Locale.SIMPLIFIED_CHINESE.getLanguage().equals(LocaleContextHolder.getLocale().getLanguage());
+//        return Locale.SIMPLIFIED_CHINESE.getLanguage().equals(LocaleContextHolder.getLocale().getLanguage());
+        return true;
     }
 }
